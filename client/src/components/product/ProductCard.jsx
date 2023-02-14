@@ -5,14 +5,14 @@ import Typography from "@mui/material/Typography";
 import { Link } from "react-router-dom";
 
 function Product({ product }) {
-  const { id, name, imageUrl, description, price, rating } = product;
+  const { id, name, imageUrl, shortDescription, price, rating } = product;
   return (
     <Link to={`/product/${id}`} className="basis-1/5">
       <Card className="px-2 flex flex-col justify-between">
         <img src={imageUrl} />
         <h2>{name}</h2>
         <h3>{price}</h3>
-        <p className="mb-3">{description}</p>
+        <p className="mb-3">{shortDescription}</p>
         <Rating
           name="read-only"
           value={rating}
