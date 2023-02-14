@@ -12,7 +12,7 @@ function RenderProduct({ product }) {
         <img src={imageUrl} className=" self-center" />
         <div className="py-3 flex-grow mb-5">
           <Typography gutterBottom variant="h5" component="div">
-            {name}
+            {name} - {price} SEK
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {longDescription}
