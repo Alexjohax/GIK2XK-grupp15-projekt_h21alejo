@@ -17,7 +17,7 @@ function Home() {
         md={3}
       >
         <div className="h-1/2 w-4/5 backdrop-blur-md rounded-3xl ">
-          <Link to={"/shop"} className="text-2xl">
+          <Link to={"/products"} className="text-2xl">
             Shop now
           </Link>
         </div>

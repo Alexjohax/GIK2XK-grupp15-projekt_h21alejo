@@ -1,7 +1,7 @@
 import { Button, Container, Rating, Typography } from "@mui/material";
 import React from "react";
 
-function RenderProduct({ product }) {
+function RenderProduct({ product, updateCartHandler }) {
   const { name, longDescription, price, rating, imageUrl } = product;
   return (
     <Container
@@ -26,7 +26,12 @@ function RenderProduct({ product }) {
             size="small"
             readOnly
           />
-          <Button variant="contained">Buy now</Button>
+          <Button
+            variant="contained"
+            onClick={() => updateCartHandler(product)}
+          >
+            Add to cart
+          </Button>
         </div>
       </div>
     </Container>

@@ -12,11 +12,20 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Link, NavLink } from "react-router-dom";
+import { cardActionAreaClasses } from "@mui/material";
 
-const pages = ["Products", "About", "Contact"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const navLinkStyles = "text-white mx-4 text-2xl uppercase";
 
-function ResponsiveAppBar() {
+const pages = [
+  <NavLink className={navLinkStyles} to="/products">
+    Shop now
+  </NavLink>,
+];
+const settings = ["Profile", <Link to="/dashboard">Dashboard</Link>, "Logout"];
+
+function ResponsiveAppBar({ cart, numberOfItemsInCart }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
@@ -114,16 +123,17 @@ function ResponsiveAppBar() {
             GREAT BIKES
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: "white", display: "block" }}
-              >
-                {page}
-              </Button>
-            ))}
+            {pages.map((page) => page)}
           </Box>
+          <Container maxWidth="xs">
+            <Link
+              className="flex flex-col text-white justify-center items-center hover:scale-125 hover:text-white"
+              to="cart"
+            >
+              <ShoppingCartIcon />
+              <Typography>{numberOfItemsInCart}</Typography>
+            </Link>
+          </Container>
 
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
@@ -131,6 +141,7 @@ function ResponsiveAppBar() {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
               </IconButton>
             </Tooltip>
+
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"
