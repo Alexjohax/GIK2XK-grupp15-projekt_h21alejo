@@ -7,9 +7,10 @@ import { useEffect, useState } from "react";
 import ShoppingCart from "./pages/ShoppingCart";
 import RenderProducts from "./components/product/RenderProducts";
 import Dashboard from "./pages/dashboard/Dashboard";
+import axios from 'axios'
 
 function App() {
-  const products = [
+/*    const products = [
     {
       id: 1,
       name: "Super bike",
@@ -167,8 +168,14 @@ function App() {
       price: 100,
       rating: 4.6,
     },
-  ];
-
+  ];  */
+  const [products, setProducts] = useState([])
+  useEffect(() => {
+    async function fetchData() {
+      await fetch('http://localhost:5000/products').then((result) => result.json()).then((data) => setProducts(data))
+    }
+    fetchData();
+  },[])
   const [cart, setCart] = useState([]);
 
   const updateCartHandler = (product) => {

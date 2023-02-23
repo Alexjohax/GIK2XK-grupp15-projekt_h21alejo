@@ -4,7 +4,12 @@ import Card from "@mui/material/Card";
 import { Link } from "react-router-dom";
 
 function Product({ product, updateCartHandler }) {
-  const { id, name, imageUrl, shortDescription, price, rating } = product;
+  const { id, title, imageUrl, price, ratings } = product;
+  let rating = 0;
+  if (ratings) {
+    const values = ratings.reduce((total,num) => total + num, 0);
+    rating = values / ratings.length;
+  } 
   return (
     <Card className="basis-1/5 flex flex-col">
       <Link
@@ -12,9 +17,8 @@ function Product({ product, updateCartHandler }) {
         className="px-2 flex flex-col justify-between min-h-[350px]"
       >
         <img src={imageUrl} />
-        <h2>{name}</h2>
+        <h2>{title}</h2>
         <h3>{price}</h3>
-        <p className="mb-3">{shortDescription}</p>
         <Rating
           name="read-only"
           value={rating}

@@ -109,3 +109,11 @@ function _formatProduct(product) {
     return cleanProduct;
   }
 }
+
+module.exports = {
+  getById,
+  getAll,
+  create,
+  update,
+  destroy,
+};

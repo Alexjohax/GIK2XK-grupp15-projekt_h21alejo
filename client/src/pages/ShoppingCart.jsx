@@ -45,7 +45,7 @@ function ShoppingCart({ cart, removeProduct }) {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={`${product.name} x ${product.quantity} `}
+                  primary={`${product.title} x ${product.quantity} `}
                   secondary={`${product.price * product.quantity} SEK`}
                 />
               </ListItem>
