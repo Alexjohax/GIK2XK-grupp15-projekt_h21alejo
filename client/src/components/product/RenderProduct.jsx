@@ -8,6 +8,17 @@ function RenderProduct({ product, updateCartHandler }) {
     const values = ratings.reduce((total,num) => total + num, 0);
     rating = values / ratings.length;
   } 
+  const updateRating = (id, value) => {
+    const url = 'http://localhost:5000/ratings'
+    const payload = {product_id: id, rating: value}
+
+    fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    }).then(response => response.json()).then(data => console.log(data)).catch(error => console.log(error))
+
+  }
   return (
     <Container
       maxWidth="md"
@@ -25,11 +36,11 @@ function RenderProduct({ product, updateCartHandler }) {
         </div>
         <div className="flex justify-evenly w-full">
           <Rating
-            name="read-only"
+            name="simple-controlled"
             value={rating}
             precision={0.5}
             size="small"
-            readOnly
+            onChange={(event, newValue) => updateRating(id, newValue)}
           />
           <Button
             variant="contained"
@@ -41,14 +52,16 @@ function RenderProduct({ product, updateCartHandler }) {
         </div>
       </div>
       <Container maxWidth="md">
-      <Typography className="text-black">Product ratings</Typography>
-        {ratings.map((rating) => <Container maxWidth="md"><Rating
+        <Typography className="text-black">Product ratings</Typography>
+        <Container sx={{display: 'flex', flexDirection: 'column'}}  maxWidth="md">
+        {ratings.map((rating) => <Rating key={`rating-${Math.floor(Math.random()*100)}`}
             name="read-only"
             value={rating}
             precision={0.5}
             size="small"
             readOnly
-          />{rating.createdAt}</Container>)}
+          />)}
+        </Container>
       </Container>
     </Container>
   );
