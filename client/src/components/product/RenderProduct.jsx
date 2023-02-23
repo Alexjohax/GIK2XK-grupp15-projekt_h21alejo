@@ -2,7 +2,12 @@ import { Button, Container, Rating, Typography } from "@mui/material";
 import React from "react";
 
 function RenderProduct({ product, updateCartHandler }) {
-  const { name, longDescription, price, rating, imageUrl } = product;
+  const { id, title, imageUrl, description, price, ratings } = product;
+  let rating = 0;
+  if (ratings) {
+    const values = ratings.reduce((total,num) => total + num, 0);
+    rating = values / ratings.length;
+  } 
   return (
     <Container
       maxWidth="md"
@@ -11,11 +16,11 @@ function RenderProduct({ product, updateCartHandler }) {
       <div className="flex flex-wrap justify-center items-center flex-col px-6">
         <img src={imageUrl} className=" self-center" />
         <div className="py-3 flex-grow mb-5">
-          <Typography gutterBottom variant="h5" component="div">
-            {name} - {price} SEK
+          <Typography gutterBottom variant="h5" component="div" className="text-black">
+            {title} - {price} SEK
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {longDescription}
+            {description}
           </Typography>
         </div>
         <div className="flex justify-evenly w-full">
@@ -32,8 +37,19 @@ function RenderProduct({ product, updateCartHandler }) {
           >
             Add to cart
           </Button>
+          
         </div>
       </div>
+      <Container maxWidth="md">
+      <Typography className="text-black">Product ratings</Typography>
+        {ratings.map((rating) => <Container maxWidth="md"><Rating
+            name="read-only"
+            value={rating}
+            precision={0.5}
+            size="small"
+            readOnly
+          />{rating.createdAt}</Container>)}
+      </Container>
     </Container>
   );
 }

@@ -15,9 +15,7 @@ function SingleProductPage({ products, updateCartHandler, cart }) {
   return (
     <>
       <RenderProduct product={product} updateCartHandler={updateCartHandler} />
-      <Container maxWidth="md">
-        <Typography>Add individual ratings here</Typography>
-      </Container>
+
     </>
   );
 }
