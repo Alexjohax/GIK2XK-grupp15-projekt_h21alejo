@@ -1,17 +1,25 @@
 import { Button, Rating } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import { Link } from "react-router-dom";
 
 function Product({ product, updateCartHandler }) {
   const { id, title, imageUrl, price, ratings } = product;
-  let rating = 0;
-  if (ratings) {
-    const values = ratings.reduce((total,num) => total + num, 0);
-    rating = values / ratings.length;
-  } 
+  const [rating, setRating] = useState(0);
+
+  useEffect(() => {
+    let values = 0;
+    ratings.forEach((rating) => {
+      values += rating.rating;
+    });
+    setRating(values / ratings.length);
+    console.log("rating: ", rating);
+  }, [ratings]);
   return (
-    <Card className="basis-1/5 flex flex-col">
+    <Card
+      className="flex flex-col"
+      sx={{ flexBasis: { xs: "100%", sm: "45%", md: "30%", lg: "22%" } }}
+    >
       <Link
         to={`/products/${id}`}
         className="px-2 flex flex-col justify-between min-h-[350px]"
@@ -22,7 +30,7 @@ function Product({ product, updateCartHandler }) {
         <Rating
           name="read-only"
           value={rating}
-          precision={0.5}
+          precision={1.0}
           size="small"
           readOnly
           className="mb-2"

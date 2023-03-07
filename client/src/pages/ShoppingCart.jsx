@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Button,
   Container,
   IconButton,
   List,
@@ -8,11 +9,13 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
+import FeedbackAlert from "../components/feedback/FeedbackAlert";
+import { useNavigate } from "react-router-dom";
 
-function ShoppingCart({ cart, removeProduct }) {
+function ShoppingCart({ cart, setCart, removeProduct }) {
   const calculateTotal = (cart) => {
     let sum = 0;
     cart.forEach((product) => {
@@ -20,10 +23,18 @@ function ShoppingCart({ cart, removeProduct }) {
     });
     return sum;
   };
+  const [orderConfirmed, setOrderConfirmed] = useState(false);
+  const navigate = useNavigate();
 
   return (
-    <Container maxWidth="xl" className="h-screen">
+    <Container
+      maxWidth="xl"
+      className="h-screen flex justify-center items-center"
+    >
       <Container maxWidth="xs">
+        {orderConfirmed && cart.length > 0 && (
+          <FeedbackAlert message="Tack för din beställning!" width="100%" />
+        )}
         <List>
           {cart.length > 0 ? (
             cart.map((product) => (
@@ -33,7 +44,9 @@ function ShoppingCart({ cart, removeProduct }) {
                   <IconButton
                     edge="end"
                     aria-label="delete"
-                    onClick={() => removeProduct(product)}
+                    onClick={() => {
+                      removeProduct(product);
+                    }}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -63,6 +76,30 @@ function ShoppingCart({ cart, removeProduct }) {
           <>
             <Typography>Total: {calculateTotal(cart)}</Typography>
           </>
+        )}
+        {!orderConfirmed ? (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              localStorage.removeItem("productCart");
+              setOrderConfirmed(true);
+            }}
+          >
+            ORDER NOW!
+          </Button>
+        ) : (
+          <Button
+            variant="outlined"
+            onClick={() => {
+              setCart([]);
+              setOrderConfirmed(false);
+              setTimeout(() => {
+                navigate("/products");
+              }, 300);
+            }}
+          >
+            Back to products!
+          </Button>
         )}
       </Container>
     </Container>

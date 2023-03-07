@@ -1,40 +1,40 @@
 const router = require("express").Router();
-const productService = require("../services/productService");
+const orderService = require("../services/orderService");
 
 router.get("/:id", (req, res) => {
   const id = req.params.id;
 
-  productService.getById(id).then((result) => {
+  orderService.getById(id).then((result) => {
     res.status(result.status).json(result.data);
   });
 });
 
 router.get("/", (req, res) => {
-  productService.getAll().then((result) => {
+  orderService.getAll().then((result) => {
     res.status(result.status).json(result.data);
   });
 });
 
 router.post("/", (req, res) => {
-  const product = req.body;
-  productService.create(product).then((result) => {
+  const order = req.body;
+  orderService.create(order).then((result) => {
     res.status(result.status).json(result.data);
   });
 });
 
 router.put("/", (req, res) => {
-  const product = req.body;
-  const id = product.id;
+  const order = req.body;
+  const id = order.id;
 
-  productService.update(product, id).then((result) => {
+  orderService.update(order, id).then((result) => {
     res.status(result.status).json(result.data);
   });
 });
 
-router.delete("/:id", (req, res) => {
-  const id = req.params.id;
+router.delete("/", (req, res) => {
+  const id = req.body.id;
 
-  productService.destroy(id).then((result) => {
+  orderService.destroy(id).then((result) => {
     res.status(result.status).json(result.data);
   });
 });

@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
   return sequelize.define(
     "user",
     {
-      user_id: {
+      id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         autoIncrement: true,
@@ -35,6 +35,13 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           len: [8, 120],
         },
+      },
+      isAdmin: {
+        type: DataTypes.BOOLEAN,
+      },
+      photoUrl: {
+        type: DataTypes.STRING(200),
+        allowNull: true,
       },
     },
     { underscored: true }

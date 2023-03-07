@@ -1,9 +1,16 @@
-import React from "react";
+import { Box } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { getAllProducts } from "../../models/ProductModel";
 import ProductCard from "./ProductCard";
 
-function RenderProducts({ products, updateCartHandler }) {
+function RenderProducts({ updateCartHandler }) {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    getAllProducts().then((products) => setProducts(products));
+  }, []);
+
   return (
-    <div className="w-4/5 mx-auto flex flex-row gap-5 flex-wrap items-center">
+    <Box className="w-full mx-auto flex flex-row gap-5 flex-wrap justify-center items-center">
       {products.map((product) => (
         <ProductCard
           key={product.id}
@@ -11,7 +18,7 @@ function RenderProducts({ products, updateCartHandler }) {
           updateCartHandler={updateCartHandler}
         />
       ))}
-    </div>
+    </Box>
   );
 }
 

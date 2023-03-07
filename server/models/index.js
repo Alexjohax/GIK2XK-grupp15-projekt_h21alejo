@@ -44,20 +44,19 @@ Object.keys(db).forEach((modelName) => {
   }
 });
 
-/* 
-User har många cart
-Cart har många product
-Product har många rating
-
-*/
-
 db.cart.belongsTo(db.user, { foreignKey: { allowNull: false } });
 db.user.hasMany(db.cart, { allowNull: false, onDelete: "CASCADE" });
+
+db.order.belongsTo(db.user, { foreignKey: "user_id" });
+db.user.hasMany(db.order);
 
 db.cart.belongsTo(db.product);
 db.product.hasMany(db.cart);
 
-db.rating.belongsTo(db.product, { foreignKey: "product_id" });
+db.rating.belongsTo(db.product, {
+  foreignKey: "product_id",
+  onDelete: "CASCADE",
+});
 db.product.hasMany(db.rating);
 
 db.sequelize = sequelize;

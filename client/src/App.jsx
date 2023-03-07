@@ -7,28 +7,27 @@ import { useEffect, useState } from "react";
 import ShoppingCart from "./pages/ShoppingCart";
 import RenderProducts from "./components/product/RenderProducts";
 import Dashboard from "./pages/dashboard/Dashboard";
+import { useMemo } from "react";
 
 function App() {
-
-  const [products, setProducts] = useState([])
-  useEffect(() => {
-    async function fetchData() {
-      await fetch('http://localhost:5000/products').then((result) => result.json()).then((data) => setProducts(data))
-    }
-    fetchData();
-  },[])
   const [cart, setCart] = useState([]);
 
   const updateCartHandler = (product) => {
     const existingProduct = cart.find((p) => p.id === product.id);
     if (existingProduct) {
-      existingProduct.quantity += 1; // increment the quantity of the existing product
-      setCart([...cart]); // create a new array to trigger a re-render
+      const updatedProduct = {
+        ...existingProduct,
+        quantity: existingProduct.quantity + 1,
+      };
+      const updatedCart = cart.map((p) =>
+        p.id === existingProduct.id ? updatedProduct : p
+      );
+      setCart(updatedCart);
     } else {
-      setCart([...cart, { ...product, quantity: 1 }]); // add a new product to the cart with a quantity of 1
+      setCart([...cart, { ...product, quantity: 1 }]);
     }
-    cart.numberOfItems += 1;
-    console.log("cartnubmer", cart.numberOfItems);
+    console.log("set productCart to localStorage:", JSON.stringify(cart));
+    localStorage.setItem("productCart", JSON.stringify(cart));
   };
 
   const removeProductFromCartHandler = (productToRemove) => {
@@ -36,7 +35,26 @@ function App() {
   };
 
   useEffect(() => {
-    console.log("cart: ", cart);
+    const storedValue = localStorage.getItem("productCart");
+    console.log("storedvalue: ", storedValue);
+
+    try {
+      if (storedValue && storedValue.length > 0) {
+        setCart(JSON.parse(storedValue));
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      localStorage.setItem("productCart", JSON.stringify(cart));
+    }
+  }, [cart]);
+
+  const numberOfItems = useMemo(() => {
+    return cart.reduce((total, product) => total + product.quantity, 0);
   }, [cart]);
 
   return (
@@ -47,29 +65,19 @@ function App() {
           path="products"
           element={
             <Shop
-              products={products}
               updateCartHandler={updateCartHandler}
-              cart={cart}
+              numberOfItems={numberOfItems}
             />
           }
         >
           <Route
             index
-            element={
-              <RenderProducts
-                products={products}
-                updateCartHandler={updateCartHandler}
-              />
-            }
+            element={<RenderProducts updateCartHandler={updateCartHandler} />}
           />
           <Route
             path=":id"
             element={
-              <SingleProductPage
-                products={products}
-                updateCartHandler={updateCartHandler}
-                cart={cart}
-              />
+              <SingleProductPage updateCartHandler={updateCartHandler} />
             }
           />
           <Route
@@ -78,12 +86,14 @@ function App() {
               <ShoppingCart
                 cart={cart}
                 removeProduct={removeProductFromCartHandler}
+                setCart={setCart}
               />
             }
           />
         </Route>
 
-        <Route path="dashboard" element={<Dashboard />} />
+        <Route path="dashboard/*" element={<Dashboard />} />
+        <Route path="*" element={<Home />} />
       </Routes>
     </div>
   );

@@ -21,7 +21,12 @@ async function getById(id) {
   try {
     const product = await db.product.findOne({
       where: { id },
-      include: [db.rating],
+      include: [
+        {
+          model: db.rating,
+          attributes: ["rating", "createdAt"],
+        },
+      ],
     });
     return createResponseSuccess(_formatProduct(product));
   } catch (error) {
@@ -40,8 +45,6 @@ async function getAll() {
     return createResponseError(error.status, error.message);
   }
 }
-
-// TO DO: addRating (som add comment i lektion), create, update, destroy product
 
 async function create(product) {
   const invalidData = validate(product, constraints);
@@ -104,7 +107,7 @@ function _formatProduct(product) {
 
   if (product.ratings) {
     product.ratings.map((rating) => {
-      return (cleanProduct.ratings = [rating.rating, ...cleanProduct.ratings]);
+      return (cleanProduct.ratings = [rating, ...cleanProduct.ratings]);
     });
     return cleanProduct;
   }

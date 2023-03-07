@@ -1,15 +1,9 @@
 import ResponsiveAppBar from "../components/navigation/ResponsiveAppBar";
-import React from "react";
-import RenderProducts from "../components/product/RenderProducts";
+import React, { useEffect, useState } from "react";
 import { Container } from "@mui/material";
 import { Outlet } from "react-router-dom";
 
-function Shop({ cart }) {
-  const itemsInCart = cart.reduce(
-    (total, product) => total + product.quantity,
-    0
-  );
-
+function Shop({ numberOfItems }) {
   return (
     <Container maxWidth="xl" className="h-screen">
       <Container
@@ -18,8 +12,8 @@ function Shop({ cart }) {
       >
         GREAT BIKES
       </Container>
-      <ResponsiveAppBar numberOfItemsInCart={itemsInCart} />
-      <Container className="my-5" maxWidth="lg">
+      <ResponsiveAppBar numberOfItemsInCart={numberOfItems} />
+      <Container className="my-5" maxWidth="xl">
         <Outlet />
       </Container>
     </Container>
