@@ -15,6 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link, NavLink } from "react-router-dom";
 import { cardActionAreaClasses } from "@mui/material";
+import { DirectionsBike } from "@mui/icons-material";
 
 const navLinkStyles = "text-white mx-4 text-2xl uppercase";
 
@@ -48,7 +49,6 @@ function ResponsiveAppBar({ cart, numberOfItemsInCart }) {
     <AppBar position="static">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
           <Typography
             variant="h6"
             noWrap
@@ -64,6 +64,9 @@ function ResponsiveAppBar({ cart, numberOfItemsInCart }) {
               textDecoration: "none",
             }}
           >
+            <DirectionsBike
+              sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
+            />
             GREAT BIKES
           </Typography>
 
@@ -103,7 +106,7 @@ function ResponsiveAppBar({ cart, numberOfItemsInCart }) {
               ))}
             </Menu>
           </Box>
-          <AdbIcon sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <DirectionsBike sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
           <Typography
             variant="h5"
             noWrap

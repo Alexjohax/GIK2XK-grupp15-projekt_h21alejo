@@ -72,6 +72,7 @@ function RenderProduct({ fetchProduct, product, updateCartHandler }) {
         </Box>
         {success && (
           <FeedbackAlert
+            color="success"
             message="This awesome bike was added to your cart!"
             width="50%"
           />

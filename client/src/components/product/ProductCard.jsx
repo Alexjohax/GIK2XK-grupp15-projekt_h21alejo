@@ -36,7 +36,11 @@ function Product({ product, updateCartHandler }) {
           className="mb-2"
         />
       </Link>
-      <Button onClick={() => updateCartHandler(product)} variant="contained">
+      <Button
+        onClick={() => updateCartHandler(product)}
+        variant="contained"
+        color="secondary"
+      >
         Add to cart
       </Button>
     </Card>

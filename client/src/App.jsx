@@ -8,6 +8,8 @@ import ShoppingCart from "./pages/ShoppingCart";
 import RenderProducts from "./components/product/RenderProducts";
 import Dashboard from "./pages/dashboard/Dashboard";
 import { useMemo } from "react";
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "./theme/theme";
 
 function App() {
   const [cart, setCart] = useState([]);
@@ -59,42 +61,44 @@ function App() {
 
   return (
     <div className="App">
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route
-          path="products"
-          element={
-            <Shop
-              updateCartHandler={updateCartHandler}
-              numberOfItems={numberOfItems}
-            />
-          }
-        >
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route exact path="/" element={<Home />} />
           <Route
-            index
-            element={<RenderProducts updateCartHandler={updateCartHandler} />}
-          />
-          <Route
-            path=":id"
+            path="products"
             element={
-              <SingleProductPage updateCartHandler={updateCartHandler} />
-            }
-          />
-          <Route
-            path="cart"
-            element={
-              <ShoppingCart
-                cart={cart}
-                removeProduct={removeProductFromCartHandler}
-                setCart={setCart}
+              <Shop
+                updateCartHandler={updateCartHandler}
+                numberOfItems={numberOfItems}
               />
             }
-          />
-        </Route>
+          >
+            <Route
+              index
+              element={<RenderProducts updateCartHandler={updateCartHandler} />}
+            />
+            <Route
+              path=":id"
+              element={
+                <SingleProductPage updateCartHandler={updateCartHandler} />
+              }
+            />
+            <Route
+              path="cart"
+              element={
+                <ShoppingCart
+                  cart={cart}
+                  removeProduct={removeProductFromCartHandler}
+                  setCart={setCart}
+                />
+              }
+            />
+          </Route>
 
-        <Route path="dashboard/*" element={<Dashboard />} />
-        <Route path="*" element={<Home />} />
-      </Routes>
+          <Route path="dashboard/*" element={<Dashboard />} />
+          <Route path="*" element={<Home />} />
+        </Routes>
+      </ThemeProvider>
     </div>
   );
 }
