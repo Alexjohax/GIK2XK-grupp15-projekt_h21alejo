@@ -63,6 +63,18 @@ async function getById(id) {
   }
 }
 
+async function getByEmail(email) {
+  try {
+    const user = await db.user.findOne({
+      where: { email: email },
+      include: [db.order],
+    });
+    return createResponseSuccess(user);
+  } catch (error) {
+    return createResponseError(error.status, error.message);
+  }
+}
+
 async function create(user) {
   const invalidData = validate(user, constraints);
   if (invalidData) {
@@ -111,6 +123,7 @@ async function destroy(id) {
 module.exports = {
   getById,
   getAll,
+  getByEmail,
   create,
   update,
   destroy,

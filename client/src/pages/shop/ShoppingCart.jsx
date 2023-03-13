@@ -12,8 +12,9 @@ import {
 import React, { useState } from "react";
 
 import DeleteIcon from "@mui/icons-material/Delete";
-import FeedbackAlert from "../components/feedback/FeedbackAlert";
+import FeedbackAlert from "../../components/feedback/FeedbackAlert";
 import { useNavigate } from "react-router-dom";
+import { createOrder } from "../../models/OrderModel";
 
 function ShoppingCart({ cart, setCart, removeProduct }) {
   const calculateTotal = (cart) => {
@@ -25,6 +26,13 @@ function ShoppingCart({ cart, setCart, removeProduct }) {
   };
   const [orderConfirmed, setOrderConfirmed] = useState(false);
   const navigate = useNavigate();
+
+  const [order, setOrder] = useState({
+    items: "",
+    sum: 0,
+    status: false,
+    user_id: null,
+  });
 
   return (
     <Container
@@ -83,6 +91,24 @@ function ShoppingCart({ cart, setCart, removeProduct }) {
             onClick={() => {
               localStorage.removeItem("productCart");
               setOrderConfirmed(true);
+              setOrder({
+                items: JSON.stringify(cart),
+                sum: calculateTotal(cart).toFixed(2),
+                status: false,
+                user_id: 1,
+              });
+
+              //Måste nog ha en relationstabell mellan order och order_items och cart
+              /* typ for each product in cart createOrderItem(orderid, product) sen
+              i profil/dashboard hämtar man på orderid och får get all where orderid = orderid. */
+              /*               createOrder({
+                items: JSON.stringify(cart),
+                sum: calculateTotal(cart).toFixed(2),
+                status: false,
+                user_id: 1,
+              }); */
+
+              console.log(JSON.stringify(order).length);
             }}
           >
             ORDER NOW!

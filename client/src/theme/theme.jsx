@@ -73,10 +73,17 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     primary: {
-      main: "#212121", // black
+      /* main: "#212121", // black */
+      main: "#80CBC4", // Mint green
     },
     secondary: {
-      main: "#f5f5f5", // off-white
+      main: "#FFB74D", // Mustard yellow
+    },
+    tertiaryDark: {
+      main: "#263238", // dark gray
+    },
+    tertiaryLight: {
+      main: "#ECEFF1", // light gray
     },
     error: {
       main: "#ff3c3c", // red

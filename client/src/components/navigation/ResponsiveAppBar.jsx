@@ -8,14 +8,15 @@ import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
 import Avatar from "@mui/material/Avatar";
-import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Link, NavLink } from "react-router-dom";
-import { cardActionAreaClasses } from "@mui/material";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { DirectionsBike } from "@mui/icons-material";
+import { Button } from "@mui/material";
+import { AuthContext } from "../../App";
+import { useContext } from "react";
+import LoginModal from "../../components/login/LoginModal";
 
 const navLinkStyles = "text-white mx-4 text-2xl uppercase";
 
@@ -24,11 +25,29 @@ const pages = [
     Shop now
   </NavLink>,
 ];
-const settings = ["Profile", <Link to="/dashboard">Dashboard</Link>, "Logout"];
 
-function ResponsiveAppBar({ cart, numberOfItemsInCart }) {
+function ResponsiveAppBar({ numberOfItemsInCart }) {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const { isLoggedIn } = useContext(AuthContext);
+  const settings = [
+    <Button
+      onClick={() => {
+        navigate("/profile");
+      }}
+    >
+      Profile
+    </Button>,
+    <Button
+      onClick={() => {
+        navigate("/dashboard");
+      }}
+    >
+      Dashboard
+    </Button>,
+    <Button>Logout</Button>,
+  ];
+  const navigate = useNavigate();
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -60,16 +79,15 @@ function ResponsiveAppBar({ cart, numberOfItemsInCart }) {
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
-              color: "inherit",
               textDecoration: "none",
             }}
+            color="secondary"
           >
             <DirectionsBike
               sx={{ display: { xs: "none", md: "flex" }, mr: 1 }}
             />
             GREAT BIKES
           </Typography>
-
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
@@ -125,7 +143,7 @@ function ResponsiveAppBar({ cart, numberOfItemsInCart }) {
           >
             GREAT BIKES
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+          <Box sx={{ flexGrow: 0, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => page)}
           </Box>
           <Container maxWidth="xs">
@@ -137,37 +155,57 @@ function ResponsiveAppBar({ cart, numberOfItemsInCart }) {
               <Typography>{numberOfItemsInCart}</Typography>
             </Link>
           </Container>
+          {!isLoggedIn ? (
+            <LoginModal />
+          ) : (
+            <Box sx={{ flexGrow: 0 }}>
+              <Tooltip title="Open settings">
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar alt="Remy Sharp" src="" />
+                </IconButton>
+              </Tooltip>
 
-          <Box sx={{ flexGrow: 0 }}>
-            <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="" />
-              </IconButton>
-            </Tooltip>
-
-            <Menu
-              sx={{ mt: "45px" }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              <Menu
+                sx={{ mt: "45px" }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Button
+                    onClick={() => {
+                      navigate("/profile");
+                    }}
+                  >
+                    Profile
+                  </Button>
                 </MenuItem>
-              ))}
-            </Menu>
-          </Box>
+
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Button
+                    onClick={() => {
+                      navigate("/dashboard");
+                    }}
+                  >
+                    Dashboard
+                  </Button>
+                </MenuItem>
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Button>Logout</Button>
+                </MenuItem>
+              </Menu>
+            </Box>
+          )}
         </Toolbar>
       </Container>
     </AppBar>

@@ -8,15 +8,11 @@ module.exports = (sequelize, DataTypes) => {
         autoIncrement: true,
       },
       items: {
-        type: DataTypes.STRING,
+        type: DataTypes.STRING(1500),
         allowNull: false,
       },
       sum: {
         type: DataTypes.DOUBLE,
-        allowNull: false,
-      },
-      date: {
-        type: DataTypes.DATE,
         allowNull: false,
       },
       status: {

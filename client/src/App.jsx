@@ -1,18 +1,31 @@
 import Home from "./pages/Home";
-import Shop from "./pages/Shop";
+import Shop from "./pages/shop/Shop";
 import { Route, Routes } from "react-router-dom";
 import "./App.css";
-import SingleProductPage from "./pages/SingleProductPage";
-import { useEffect, useState } from "react";
-import ShoppingCart from "./pages/ShoppingCart";
+import SingleProductPage from "./pages/shop/SingleProductPage";
+import { createContext, useEffect, useState } from "react";
+import ShoppingCart from "./pages/shop/ShoppingCart";
 import RenderProducts from "./components/product/RenderProducts";
 import Dashboard from "./pages/dashboard/Dashboard";
 import { useMemo } from "react";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme/theme";
+import ProfilePage from "./pages/profilepage/ProfilePage";
+
+export const AuthContext = createContext();
 
 function App() {
   const [cart, setCart] = useState([]);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setcurrentUser] = useState(null);
+
+  function handleLogin() {
+    setIsLoggedIn(true);
+  }
+
+  function handleLogout() {
+    setIsLoggedIn(false);
+  }
 
   const updateCartHandler = (product) => {
     const existingProduct = cart.find((p) => p.id === product.id);
@@ -61,44 +74,49 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <Routes>
-          <Route exact path="/" element={<Home />} />
-          <Route
-            path="products"
-            element={
-              <Shop
-                updateCartHandler={updateCartHandler}
-                numberOfItems={numberOfItems}
-              />
-            }
-          >
+      <AuthContext.Provider value={{ isLoggedIn, handleLogin, handleLogout }}>
+        <ThemeProvider theme={theme}>
+          <Routes>
+            <Route exact path="/" element={<Home />} />
             <Route
-              index
-              element={<RenderProducts updateCartHandler={updateCartHandler} />}
-            />
-            <Route
-              path=":id"
+              path="products"
               element={
-                <SingleProductPage updateCartHandler={updateCartHandler} />
-              }
-            />
-            <Route
-              path="cart"
-              element={
-                <ShoppingCart
-                  cart={cart}
-                  removeProduct={removeProductFromCartHandler}
-                  setCart={setCart}
+                <Shop
+                  updateCartHandler={updateCartHandler}
+                  numberOfItems={numberOfItems}
                 />
               }
-            />
-          </Route>
+            >
+              <Route
+                index
+                element={
+                  <RenderProducts updateCartHandler={updateCartHandler} />
+                }
+              />
+              <Route
+                path=":id"
+                element={
+                  <SingleProductPage updateCartHandler={updateCartHandler} />
+                }
+              />
+              <Route
+                path="cart"
+                element={
+                  <ShoppingCart
+                    cart={cart}
+                    removeProduct={removeProductFromCartHandler}
+                    setCart={setCart}
+                  />
+                }
+              />
+            </Route>
 
-          <Route path="dashboard/*" element={<Dashboard />} />
-          <Route path="*" element={<Home />} />
-        </Routes>
-      </ThemeProvider>
+            <Route path="dashboard/*" element={<Dashboard />} />
+            <Route path="profile/*" element={<ProfilePage />} />
+            <Route path="*" element={<Home />} />
+          </Routes>
+        </ThemeProvider>
+      </AuthContext.Provider>
     </div>
   );
 }

@@ -2,6 +2,7 @@ import { Button, Rating } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Card from "@mui/material/Card";
 import { Link } from "react-router-dom";
+import theme from "../../theme/theme";
 
 function Product({ product, updateCartHandler }) {
   const { id, title, imageUrl, price, ratings } = product;

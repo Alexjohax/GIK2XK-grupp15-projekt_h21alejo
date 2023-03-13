@@ -9,6 +9,14 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.get("/:email", (req, res) => {
+  const email = req.params.email;
+
+  userService.getByEmail(email).then((result) => {
+    res.status(result.status).json(result.data);
+  });
+});
+
 router.get("/", (req, res) => {
   userService.getAll().then((result) => {
     res.status(result.status).json(result.data);

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import RenderProduct from "../components/product/RenderProduct";
+import RenderProduct from "../../components/product/RenderProduct";
 import { Typography } from "@mui/material";
 
-import { getOne } from "../models/ProductModel";
+import { getOne } from "../../models/ProductModel";
 
 function SingleProductPage({ updateCartHandler }) {
   const { id } = useParams();
