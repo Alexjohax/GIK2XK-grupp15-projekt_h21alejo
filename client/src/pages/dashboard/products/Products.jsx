@@ -1,7 +1,7 @@
 import { Avatar, Box, Paper, Typography } from "@mui/material";
 import React, { useEffect, useMemo, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { getAll } from "../../../models/UserModel";
+
 import moment from "moment";
 import { gridClasses } from "@mui/system";
 import { grey } from "@mui/material/colors";
