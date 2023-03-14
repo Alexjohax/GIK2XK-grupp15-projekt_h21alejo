@@ -7,12 +7,8 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
         autoIncrement: true,
       },
-      items: {
-        type: DataTypes.STRING(1500),
-        allowNull: false,
-      },
       sum: {
-        type: DataTypes.DOUBLE,
+        type: DataTypes.FLOAT,
         allowNull: false,
       },
       status: {

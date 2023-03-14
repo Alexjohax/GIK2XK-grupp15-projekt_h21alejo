@@ -4,12 +4,13 @@ import List from "@mui/material/List";
 
 import OrderListItem from "./OrderListItem";
 
-function OrderList() {
+function OrderList({ orders }) {
   return (
     <List sx={{ width: "100%" }}>
-      <OrderListItem />
-      <OrderListItem />
-      <OrderListItem />
+      {orders &&
+        orders.map((order) => (
+          <OrderListItem key={order.ordernummer} order={order} />
+        ))}
     </List>
   );
 }

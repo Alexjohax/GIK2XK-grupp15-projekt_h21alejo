@@ -10,8 +10,8 @@ export async function getAll() {
   }
 }
 
-export async function getOne(id) {
-  const result = await api.get(`/users/${id}`);
+export async function getOneUser(email) {
+  const result = await api.get(`/users/${email}`);
 
   if (result.status == 200) return result.data;
   else {

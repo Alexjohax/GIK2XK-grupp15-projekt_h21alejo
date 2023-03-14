@@ -1,12 +1,9 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import MuiDrawer from "@mui/material/Drawer";
 import {
-  Category,
   ChevronLeft,
   DashboardRounded,
-  Inbox,
   Logout,
-  Mail,
   PeopleAlt,
   Sell,
   Storefront,
@@ -25,13 +22,13 @@ import {
   Typography,
 } from "@mui/material";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { getOne } from "../../models/UserModel";
+
 import Avatar from "@mui/material/Avatar";
-import Dashboard from "./Dashboard";
 import Products from "./products/Products";
 import Users from "./users/Users";
 import Main from "./main/Main";
 import Orders from "./orders/Orders";
+import { AuthContext } from "../../App";
 
 const drawerWidth = 240;
 
@@ -84,11 +81,8 @@ const Drawer = styled(MuiDrawer, {
 
 const SideList = ({ open, setOpen }) => {
   const navigate = useNavigate();
-  const [currentUser, setCurrentUser] = useState();
+  const { currentUser } = useContext(AuthContext);
   const [selectedLink, setSelectedLink] = useState("");
-  useEffect(() => {
-    getOne(1).then((user) => setCurrentUser(user));
-  }, []);
 
   const list = useMemo(
     () => [

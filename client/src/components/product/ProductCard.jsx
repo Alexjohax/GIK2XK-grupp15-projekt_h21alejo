@@ -14,12 +14,16 @@ function Product({ product, updateCartHandler }) {
       values += rating.rating;
     });
     setRating(values / ratings.length);
-    console.log("rating: ", rating);
   }, [ratings]);
+
+  const formatter = new Intl.NumberFormat("sv-SE", {
+    style: "currency",
+    currency: "SEK",
+  });
   return (
     <Card
       className="flex flex-col"
-      sx={{ flexBasis: { xs: "100%", sm: "45%", md: "30%", lg: "22%" } }}
+      sx={{ flexBasis: { xs: "100%", sm: "45%", md: "30%", lg: "22%" }, p: 1 }}
     >
       <Link
         to={`/products/${id}`}
@@ -27,7 +31,7 @@ function Product({ product, updateCartHandler }) {
       >
         <img src={imageUrl} />
         <h2>{title}</h2>
-        <h3>{price}</h3>
+        <h3>{formatter.format(price)}</h3>
         <Rating
           name="read-only"
           value={rating}

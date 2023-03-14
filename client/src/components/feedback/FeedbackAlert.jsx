@@ -5,17 +5,30 @@ import IconButton from "@mui/material/IconButton";
 import Collapse from "@mui/material/Collapse";
 import CloseIcon from "@mui/icons-material/Close";
 
-export default function FeedbackAlert({ color, setSuccess, message, width }) {
+export default function FeedbackAlert({
+  severity,
+  setSuccess,
+  message,
+  width,
+}) {
   const [open, setOpen] = React.useState(true);
 
   return (
-    <Box sx={{ width: { xs: "100%", sm: "100%", md: width } }}>
+    <Box
+      sx={{
+        width: {
+          xs: "100%",
+          sm: "100%",
+          md: width,
+        },
+      }}
+    >
       <Collapse in={open}>
         <Alert
+          severity={severity}
           action={
             <IconButton
               aria-label="close"
-              color={color}
               size="small"
               onClick={() => {
                 setOpen(false);

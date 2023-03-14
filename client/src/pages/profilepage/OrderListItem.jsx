@@ -8,40 +8,54 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import StarBorder from "@mui/icons-material/StarBorder";
-function OrderListItem() {
+import moment from "moment";
+import { InsertEmoticon, LocalShipping } from "@mui/icons-material";
+
+function OrderListItem({ order }) {
   const [open, setOpen] = React.useState(true);
 
   const handleClick = () => {
     setOpen(!open);
   };
+
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "SEK",
+  });
   return (
     <>
       <ListItemButton onClick={handleClick}>
         <ListItemIcon>
-          <InboxIcon />
+          <LocalShipping />
         </ListItemIcon>
-        <ListItemText primary="Order ID: " />
+        <ListItemText primary={`Order ID: ${order.ordernummer} `} />
         {open ? <ExpandLess /> : <ExpandMore />}
       </ListItemButton>
       <Collapse in={open} timeout="auto" unmountOnExit>
         <List component="div" disablePadding>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
-              <StarBorder />
+              <InsertEmoticon />
             </ListItemIcon>
-            <ListItemText primary="Ordered: 2020202" />
+            <ListItemText
+              primary={`Ordered at: ${moment(order.createdAt).format(
+                "YYYY-MMM-DD"
+              )}`}
+            />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
-              <StarBorder />
+              <InsertEmoticon />
             </ListItemIcon>
-            <ListItemText primary="Sum: 200" />
+            <ListItemText primary={`${formatter.format(order.sum)}`} />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
-              <StarBorder />
+              <InsertEmoticon />
             </ListItemIcon>
-            <ListItemText primary="Status: " />
+            <ListItemText
+              primary={`Status: ${order.status ? "Delivered" : "Pending"}`}
+            />
           </ListItemButton>
         </List>
       </Collapse>

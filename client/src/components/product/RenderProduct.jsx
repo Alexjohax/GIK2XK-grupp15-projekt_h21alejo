@@ -39,7 +39,11 @@ function RenderProduct({ fetchProduct, product, updateCartHandler }) {
     setRating(values / ratings.length);
     console.log("rating: ", rating);
   }, [ratings]);
-  console.log(ratings.length);
+
+  const formatter = new Intl.NumberFormat("sv-SE", {
+    style: "currency",
+    currency: "SEK",
+  });
   return (
     <Container
       maxWidth="xl"
@@ -64,7 +68,7 @@ function RenderProduct({ fetchProduct, product, updateCartHandler }) {
             component="h4"
             className="text-black"
           >
-            {title} - {price} SEK
+            {title} - {formatter.format(price)}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             {description}
@@ -72,7 +76,7 @@ function RenderProduct({ fetchProduct, product, updateCartHandler }) {
         </Box>
         {success && (
           <FeedbackAlert
-            color="success"
+            severity="success"
             message="This awesome bike was added to your cart!"
             width="50%"
           />

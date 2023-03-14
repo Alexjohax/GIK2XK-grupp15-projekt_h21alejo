@@ -17,15 +17,7 @@ export const AuthContext = createContext();
 function App() {
   const [cart, setCart] = useState([]);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [currentUser, setcurrentUser] = useState(null);
-
-  function handleLogin() {
-    setIsLoggedIn(true);
-  }
-
-  function handleLogout() {
-    setIsLoggedIn(false);
-  }
+  const [currentUser, setCurrentUser] = useState(null);
 
   const updateCartHandler = (product) => {
     const existingProduct = cart.find((p) => p.id === product.id);
@@ -74,7 +66,14 @@ function App() {
 
   return (
     <div className="App">
-      <AuthContext.Provider value={{ isLoggedIn, handleLogin, handleLogout }}>
+      <AuthContext.Provider
+        value={{
+          isLoggedIn,
+          setIsLoggedIn,
+          currentUser,
+          setCurrentUser,
+        }}
+      >
         <ThemeProvider theme={theme}>
           <Routes>
             <Route exact path="/" element={<Home />} />

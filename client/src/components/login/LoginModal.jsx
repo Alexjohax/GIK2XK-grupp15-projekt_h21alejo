@@ -1,14 +1,17 @@
 import { Button, Modal, TextField, Typography } from "@mui/material";
 import { Box } from "@mui/system";
 import React, { useContext, useState } from "react";
-
 import { AuthContext } from "../../App";
+import { getOneUser } from "../../models/UserModel";
+import FeedbackAlert from "../feedback/FeedbackAlert";
 
 function LoginModal() {
   const [open, setOpen] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { handleLogin } = useContext(AuthContext);
+  const [failed, setFailed] = useState(false);
+  const [userNotFound, setUserNotFound] = useState(false);
+  const { setIsLoggedIn, setCurrentUser } = useContext(AuthContext);
 
   const handleOpen = () => {
     setOpen(true);
@@ -27,9 +30,23 @@ function LoginModal() {
   };
 
   const handleLoginSubmit = () => {
-    console.log(`Email: ${email}, Password: ${password}`);
-    handleLogin();
-    handleClose();
+    setFailed(false);
+    setUserNotFound(false);
+    getOneUser(email).then((user) => {
+      if (user) {
+        if (user.email === email && user.password === password) {
+          setCurrentUser(user);
+          setIsLoggedIn(true);
+          setFailed(false);
+          setUserNotFound(false);
+          handleClose();
+        } else {
+          setFailed(true);
+        }
+      } else {
+        setUserNotFound(true);
+      }
+    });
   };
 
   return (
@@ -53,6 +70,9 @@ function LoginModal() {
           <Typography variant="h5" gutterBottom>
             Login
           </Typography>
+          {userNotFound && (
+            <FeedbackAlert severity="error" message="User not found." />
+          )}
           <TextField
             label="Email"
             variant="outlined"
@@ -61,6 +81,9 @@ function LoginModal() {
             value={email}
             onChange={handleEmailChange}
           />
+          {failed && (
+            <FeedbackAlert severity="error" message="Wrong password." />
+          )}
           <TextField
             label="Password"
             variant="outlined"

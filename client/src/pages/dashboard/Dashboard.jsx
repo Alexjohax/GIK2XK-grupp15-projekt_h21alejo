@@ -10,13 +10,16 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 
-import { useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import SideList from "./SideList";
 import { ThemeProvider } from "@mui/system";
-import { Tooltip } from "@mui/material";
+import { Container, Tooltip } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 import { Brightness4, Brightness7 } from "@mui/icons-material";
+import { AuthContext } from "../../App";
+import LoginModal from "../../components/login/LoginModal";
+import profileBg from "../../assets/images/profile-bg.jpeg";
 
 const drawerWidth = 240;
 
@@ -41,6 +44,7 @@ const AppBar = styled(MuiAppBar, {
 export default function Dashboard() {
   const [open, setOpen] = useState(false);
   const [dark, setDark] = useState(true);
+  const { currentUser } = useContext(AuthContext);
 
   const darkTheme = useMemo(
     () =>
@@ -59,43 +63,68 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
   return (
-    <ThemeProvider theme={darkTheme}>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AppBar position="fixed" open={open}>
-          <Toolbar>
-            <IconButton
-              color="inherit"
-              aria-label="open drawer"
-              onClick={handleDrawerOpen}
-              edge="start"
-              sx={{
-                marginRight: 5,
-                ...(open && { display: "none" }),
-              }}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Tooltip title="Go back to home page">
-              <IconButton sx={{ mr: 1 }} onClick={() => navigate("/")}>
-                Home
-              </IconButton>
-            </Tooltip>
-            <Typography
-              variant="h6"
-              noWrap
-              component="div"
-              sx={{ flexGrow: 1 }}
-            >
-              Dashboard
-            </Typography>
-            <IconButton onClick={() => setDark(!dark)}>
-              {dark ? <Brightness7 /> : <Brightness4 />}
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <SideList {...{ open, setOpen }} />
-      </Box>
-    </ThemeProvider>
+    <>
+      {currentUser && (
+        <>
+          {currentUser.isAdmin ? (
+            <ThemeProvider theme={darkTheme}>
+              <Box sx={{ display: "flex" }}>
+                <CssBaseline />
+                <AppBar position="fixed" open={open}>
+                  <Toolbar>
+                    <IconButton
+                      color="inherit"
+                      aria-label="open drawer"
+                      onClick={handleDrawerOpen}
+                      edge="start"
+                      sx={{
+                        marginRight: 5,
+                        ...(open && { display: "none" }),
+                      }}
+                    >
+                      <MenuIcon />
+                    </IconButton>
+                    <Tooltip title="Go back to home page">
+                      <IconButton sx={{ mr: 1 }} onClick={() => navigate("/")}>
+                        Home
+                      </IconButton>
+                    </Tooltip>
+                    <Typography
+                      variant="h6"
+                      noWrap
+                      component="div"
+                      sx={{ flexGrow: 1 }}
+                    >
+                      Dashboard
+                    </Typography>
+                    <IconButton onClick={() => setDark(!dark)}>
+                      {dark ? <Brightness7 /> : <Brightness4 />}
+                    </IconButton>
+                  </Toolbar>
+                </AppBar>
+                <SideList {...{ open, setOpen }} />
+              </Box>
+            </ThemeProvider>
+          ) : (
+            <Typography>ACCESS DENIED</Typography>
+          )}
+        </>
+      )}
+      {!currentUser && (
+        <Box
+          sx={{
+            height: "100vh",
+            backgroundImage: `url(${profileBg})`,
+            backgroundSize: "cover",
+            backgroundRepeat: "no-repeat",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <LoginModal />
+        </Box>
+      )}
+    </>
   );
 }

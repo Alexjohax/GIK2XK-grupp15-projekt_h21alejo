@@ -105,6 +105,7 @@ function Products({ setSelectedLink, link }) {
       {success ? (
         <FeedbackAlert
           setSuccess={setSuccess}
+          severity="success"
           message="Success! New amazing bike added."
           width="50%"
         />

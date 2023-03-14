@@ -1,13 +1,13 @@
 const router = require("express").Router();
 const userService = require("../services/userService");
 
-router.get("/:id", (req, res) => {
+/* router.get("/:id", (req, res) => {
   const id = req.params.id;
 
   userService.getById(id).then((result) => {
     res.status(result.status).json(result.data);
   });
-});
+}); */
 
 router.get("/:email", (req, res) => {
   const email = req.params.email;

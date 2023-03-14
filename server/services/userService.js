@@ -51,7 +51,7 @@ async function getAll() {
   }
 }
 
-async function getById(id) {
+/* async function getById(id) {
   try {
     const user = await db.user.findOne({
       where: { id },
@@ -61,7 +61,7 @@ async function getById(id) {
   } catch (error) {
     return createResponseError(error.status, error.message);
   }
-}
+} */
 
 async function getByEmail(email) {
   try {
@@ -121,7 +121,6 @@ async function destroy(id) {
 }
 
 module.exports = {
-  getById,
   getAll,
   getByEmail,
   create,
